@@ -91,19 +91,51 @@ Within seconds, the AI compiles a complete travel package, saving it to the user
 
 ### Cloud Deployment Setup
 
-#### Deploying the Backend (e.g. Render / Heroku / AWS)
-1. Link your Github repository to your hosting service (e.g. Render Web Services).
-2. Set the root directory to `Backend`.
-3. Add the env variables (`MONGODB_URI`, `GEMINI_API_KEY`, `JWT_SECRET`, etc.) in the environment variables dashboard.
-4. Set the **Build Command** to: `npm install && npm run build`
-5. Set the **Start Command** to: `npm start`
+#### 🌐 Deploying the Backend on Render
+1. Sign in to [Render](https://render.com) and click **New > Web Service**.
+2. Connect your Github repository (`Vgurubrahmam/AI_Travel_Planner`).
+3. Set the following options in the deployment configuration:
+   - **Name**: `ai-travel-planner-backend` (or your preferred name)
+   - **Root Directory**: `Backend`
+   - **Language**: `Node`
+   - **Branch**: `master` (or your active branch)
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+4. Under the **Environment** tab, click **Add Environment Variable** and copy over all keys from your local `.env`:
+   - `PORT` = `5000` (Render will override this, but standard to define)
+   - `MONGODB_URI` = `mongodb+srv://...` (your MongoDB Atlas connection string)
+   - `JWT_SECRET` = `your_jwt_secret_key`
+   - `JWT_EXPIRES_IN` = `7d`
+   - `GEMINI_API_KEY` = `your_google_gemini_api_key`
+   - `NODE_ENV` = `production`
+5. Click **Deploy Web Service** and copy your service's live URL (e.g., `https://ai-travel-planner-backend-vguru.onrender.com`).
 
-#### Deploying the Frontend (e.g. Vercel / Netlify)
-1. Connect your Github repository to Vercel/Netlify.
-2. Set the root directory to `Frontend`.
-3. Set the **Build Command** to: `npm run build`
-4. Set the **Output Directory** to: `dist`
-5. Set up API rewrites (`/api/*` ➡️ your deployed backend URL) in your deployment dashboard.
+#### 📐 Deploying the Frontend on Vercel
+1. Sign in to [Vercel](https://vercel.com) and click **Add New > Project**.
+2. Import your Github repository (`Vgurubrahmam/AI_Travel_Planner`).
+3. Set the following configuration settings:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: Click *Edit* and select **`Frontend`**.
+4. In the **Build and Output Settings** tab:
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+5. **Configuring the Proxy Rewrite**:
+   Inside the [vercel.json](file:///c:/Users/vguru/Desktop/internships/ai-travel-planner/Frontend/vercel.json) file in your `Frontend` folder, update the destination URL with your live Render backend URL so API calls route correctly:
+   ```json
+   {
+     "rewrites": [
+       {
+         "source": "/api/:path*",
+         "destination": "https://your-render-backend-url.onrender.com/api/:path*"
+       },
+       {
+         "source": "/(.*)",
+         "destination": "/index.html"
+       }
+     ]
+   }
+   ```
+6. Click **Deploy**. Vercel will build the frontend client and host the single-page application.
 
 ---
 
