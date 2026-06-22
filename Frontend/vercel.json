@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://ai-travel-planner-backend-vguru.onrender.com/api/:path*"
+      "destination": "https://ai-travel-planner-g6f2.onrender.com/api/:path*"
     },
     {
       "source": "/(.*)",

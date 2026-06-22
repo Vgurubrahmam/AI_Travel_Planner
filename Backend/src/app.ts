@@ -35,6 +35,11 @@ app.use('/api/auth', authLimiter);
 
 // --- Routes ---
 
+// Welcome / root route
+app.get('/', (req, res) => {
+  res.status(200).json(ApiResponse.success({ name: 'AI Travel Planner Backend API', version: '1.0.0', status: 'healthy' }, 'Welcome to AI Travel Planner API'));
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.status(200).json(ApiResponse.success({ status: 'ok', timestamp: new Date().toISOString() }, 'Server is running'));
